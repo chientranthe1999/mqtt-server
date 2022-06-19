@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@100;200;300;500;600;700&family=Charis+SIL:ital,wght@0,400;0,700;1,400;1,700&family=Hahmlet:wght@400;500;600;700;800;900&display=swap');
+
+* {
+  font-family: 'Anek Malayalam', sans-serif;
+  font-family: 'Anek Malayalam', sans-serif;
+  font-family: 'Charis SIL', serif;
+  font-family: 'Hahmlet', serif;
+}
+
+html,
+body {
+  font-size: 18px;
+}
+
+@media (max-width: 897px) {
+  html,
+  body {
+    font-size: 16px;
+  }
+}
+
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 1.25rem;
+}
+
+.el-button--primary {
+  background-color: #409eff;
+}
+
+.el-button--success {
+  background-color: #498d3d;
+}
+
+.box-shadow-1 {
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
+}
+
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+.card-header {
+  text-transform: uppercase;
+  background-color: #1f2d4f;
+  font-weight: 700;
+  color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1em;
+}
+
+// override css element-ui
+.el-radio {
+  text-align: center;
+}
+.el-radio__input {
+  display: none;
+}
