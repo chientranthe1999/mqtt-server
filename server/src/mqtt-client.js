@@ -1,4 +1,6 @@
 var mqtt = require('mqtt')
+var axios = require('axios')
+const { caculateWqi } = require('./initData.js')
 
 var options = {
   port: 1883,
@@ -18,37 +20,23 @@ mqttClient.on('connect', function () {
   mqttClient.subscribe('WqiConnector')
 })
 
-const isBetween = (value, min, max) => {
-  return value >= min && value < max
-}
-
-const equal1 = (c, q, bp) => {
-  return ((q[1] - q[0]) * (bp[1] - c)) / (b[1] - b[0]) + q[1]
-}
-
-const initBOD = (bod) => {
-  let q = []
-  let bp = []
-  const val = [100, 75, 50, 25, 1]
-  const ranges = [
-    [4, 6],
-    [6, 15],
-    [15, 25],
-    [25, 50],
-    [50, 100]
-  ]
-
-  const findedIndex = ranges.findIndex((range) => isBetween(bod, range[0], range[1]))
-  bp[0] = val[findedIndex][0]
-  bp[1] = val[findedIndex][1]
-  q[0] = val[findedIndex]
-  q[1] = val[findedIndex + 1] ?? val[findedIndex]
-}
-
 mqttClient.on('message', function (topic, message) {
   const data = message.toString()
 
   const [deviceId, turbidity, temperature] = data.split(' ')
+  const result = caculateWqi(turbidity * 20, temperature)
+
+  if (result) {
+    axios
+      .post('http://localhost:8000/api/v1/infors', {
+        ...result,
+        turbidity,
+        temperature,
+        device_id: deviceId
+      })
+      .then((result) => console.log(result))
+      .catch((e) => console.log(e.response))
+  }
 })
 
 module.exports = mqttClient

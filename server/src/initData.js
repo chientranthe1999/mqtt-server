@@ -76,7 +76,6 @@ const initDataCommon = (initData) => {
     q[0] = val[findedIndex]
     q[1] = val[findedIndex + 1] ?? val[findedIndex]
 
-    console.log(initData)
     result[key] = ((q[0] - q[1]) * (bp[1] - initData[key])) / (bp[1] - bp[0]) + q[1]
     result[key] = result[key].toFixed(1)
   }
@@ -175,24 +174,35 @@ const initDataTest = () => {
 }
 
 const caculateWqi = (turbidityInit, t) => {
-  const dataTest = initDataTest()
-  const ph = getRandom(5.6, 10)
-  const doData = getRandom(2, 8)
-  const res = initDataCommon({ ...dataTest, turbidity: turbidityInit })
-  const { bod, cod, nh4, po4, turbidity, tss, coliform } = res
+  try {
+    const dataTest = initDataTest()
+    const ph = getRandom(5.6, 10)
+    const doData = getRandom(2, 8)
+    const res = initDataCommon({ ...dataTest, turbidity: turbidityInit })
+    const { bod, cod, nh4, po4, turbidity, tss, coliform } = res
 
-  const wqiPh = initPH(ph)
+    const wqiPh = initPH(ph)
 
-  const DO = initDO(doData, t)
+    const DO = initDO(doData, t)
 
-  const midData =
-    ((Number(DO) + Number(bod) + Number(nh4) + Number(po4) + Number(cod)) *
-      (Number(tss) + Number(turbidity)) *
-      Number(coliform)) /
-    10
+    const midData =
+      ((Number(DO) + Number(bod) + Number(nh4) + Number(po4) + Number(cod)) *
+        (Number(tss) + Number(turbidity)) *
+        Number(coliform)) /
+      10
 
-  const result = (wqiPh / 100) * Math.pow(midData, 1 / 3)
-  console.log(result)
+    const wqi = (wqiPh / 100) * Math.pow(midData, 1 / 3)
+    return {
+      ...dataTest,
+      do: doData,
+      ph: ph,
+      wqi
+    }
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-caculateWqi(0.5, 27.5)
+module.exports = {
+  caculateWqi
+}
