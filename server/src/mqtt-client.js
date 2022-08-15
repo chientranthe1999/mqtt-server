@@ -24,17 +24,17 @@ mqttClient.on('message', function (topic, message) {
   const data = message.toString()
 
   const [deviceId, turbidity, temperature] = data.split(' ')
-  const result = caculateWqi(turbidity * 20, temperature)
+  const result = caculateWqi(turbidityVol, temperature)
 
   if (result) {
+    console.log(result)
     axios
       .post('http://localhost:8000/api/v1/infors', {
         ...result,
-        turbidity,
         temperature,
         device_id: deviceId
       })
-      .then((result) => console.log(result))
+      .then()
       .catch((e) => console.log(e.response))
   }
 })

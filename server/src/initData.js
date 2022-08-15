@@ -173,8 +173,9 @@ const initDataTest = () => {
   }
 }
 
-const caculateWqi = (turbidityInit, t) => {
+const caculateWqi = (turbidityVol, t) => {
   try {
+    const turbidityInit = -1120.4 * pow(turbidityVol, 2) + 5742.3 * turbidityVol - 4353.8
     const dataTest = initDataTest()
     const ph = getRandom(5.6, 10)
     const doData = getRandom(2, 8)
@@ -196,7 +197,8 @@ const caculateWqi = (turbidityInit, t) => {
       ...dataTest,
       do: doData,
       ph: ph,
-      wqi
+      wqi,
+      turbidity: turbidityInit
     }
   } catch (e) {
     console.log(e)
